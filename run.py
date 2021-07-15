@@ -7,4 +7,5 @@ from terminator.root import Root
 
 if __name__ == "__main__":
     cherrypy.config.update(GLOBAL_CONF)
-    cherrypy.quickstart(Root(), '/', APP_CONFIG)
+    cherrypy.tree.mount(Root(), '/', APP_CONFIG)
+    cherrypy.engine.start()

@@ -1,14 +1,6 @@
-# import files
-import random
-import string
 import cherrypy
 
-
-# function to read file content
-def readf(filename):
-    file = open(filename)
-    read = file.read()
-    return read
+from terminator.models.file import FileObject
 
 
 @cherrypy.expose
@@ -19,6 +11,6 @@ class Root(object):
         return {}
 
     @cherrypy.expose()
-    def store(self, myFile):
-        f = readf(myFile)  # read the uploaded file
-        return f
+    def upload(self, myFile: cherrypy._cpreqbody.Part):
+        file = FileObject(myFile)
+        return None
