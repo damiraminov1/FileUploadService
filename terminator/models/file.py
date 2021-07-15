@@ -1,15 +1,11 @@
-import string
-from datetime import datetime
 import os
 import shutil
-from time import time
+import string
+from datetime import datetime
 from random import choices
+from time import time
 
-
-DATA_PATH = ('/opt/server_data' + '/' +
-             str(datetime.today().year) + '/'
-             + str(datetime.today().month) + '/'
-             + str(datetime.today().day))
+import cherrypy
 
 
 class FileObject:
@@ -17,8 +13,12 @@ class FileObject:
         self._name = self.name(old_name=file.filename)
         self._path = self.path()
 
-
     def path(self):
+        global DATA_PATH
+        DATA_PATH = os.path.join(cherrypy.config['server_directory'],
+                                 str(datetime.today().year),
+                                 str(datetime.today().month),
+                                 str(datetime.today().day))
         if not os.path.exists(DATA_PATH):
             os.makedirs(DATA_PATH)
         shutil.move(self._name, DATA_PATH)

@@ -1,0 +1,26 @@
+.container{
+height: 400px;
+width: 800px;
+background-color: blue;
+margin-top: 12%;
+margin-left: 25%;
+color: white;
+}
+.container h2{
+font-size: 40px;
+text-align: center;
+
+}
+.off{
+font-size: 25px;
+margin-left: 23%;
+color: grey;
+background-color: ;
+}
+.on{
+font-size: 25px;
+border-top-right-radius: 25px;
+border-top-left-radius: 25px;
+border-bottom-left-radius: 25px;
+border-bottom-right-radius: 25px;
+margin-top: 20px; }

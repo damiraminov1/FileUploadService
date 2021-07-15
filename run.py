@@ -1,11 +1,12 @@
 import cherrypy
 
-# from terminator.jinjatool import JinjaTool
-from terminator.settings import GLOBAL_CONF, APP_CONFIG
 from terminator.root import Root
-# from terminator import settings
+from terminator.settings import GLOBAL_CONF, APP_CONFIG
 
-if __name__ == "__main__":
-    cherrypy.config.update(GLOBAL_CONF)
-    cherrypy.tree.mount(Root(), '/', APP_CONFIG)
-    cherrypy.engine.start()
+
+cherrypy.config.update(GLOBAL_CONF)
+
+cherrypy.tree.mount(Root(), '/', APP_CONFIG)
+
+cherrypy.engine.start()
+cherrypy.engine.block()

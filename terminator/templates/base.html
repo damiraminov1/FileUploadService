@@ -1,45 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-	.container{
-	height: 400px;
-	width: 800px;
-	background-color: blue;
-	margin-top: 12%;
-	margin-left: 25%;
-	color: white;
-	}
-	.container h2{
-	font-size: 40px;
-	text-align: center;
-
-	}
-	.off{
-	font-size: 25px;
-	margin-left: 23%;
-	color: grey;
-	background-color: ;
-	}
-	.on{
-	font-size: 25px;
-	border-top-right-radius: 25px;
-	border-top-left-radius: 25px;
-	border-bottom-left-radius: 25px;
-	border-bottom-right-radius: 25px;
-	margin-top: 20px; }
-</style>
+    <link href="/static/css/style.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="container">
-	<h2><i>File Upload Service</i></h2>
-	<form action="upload" id="form" method="POST", enctype="multipart/form-data">
-	<input class="off" type="file" name="myFile" /><br />
+    <h2><i>File Upload Service</i></h2>
+    <form , action="upload" enctype="multipart/form-data" id="form" method="POST">
+        <input class="off" name="myFile" type="file"/><br/>
 
-	<input style="margin-left: 250px;" class="on" id=" submit" type="submit" /></div>
+        <input class="on" id=" submit" style="margin-left: 250px;" type="submit"/>
 </div>
-	</form>
+</div>
+</form>
 </div>
 
 </body>
