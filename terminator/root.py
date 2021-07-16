@@ -1,5 +1,4 @@
 import cherrypy
-
 from terminator.models.file import FileObject
 
 
@@ -13,4 +12,4 @@ class Root(object):
     @cherrypy.expose()
     def upload(self, myFile: cherrypy._cpreqbody.Part):
         file = FileObject(myFile)
-        return None
+        return file.url()
