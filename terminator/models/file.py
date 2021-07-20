@@ -1,45 +1,41 @@
 import os
-import shutil
 import string
 from datetime import datetime
 from random import choices
-from time import time
+from pathlib import Path
 
 import cherrypy
 
 
 class FileObject:
-    def __init__(self, file):
-        self._name = self.name(old_name=file.filename)
-        self._path = self.path()
-        self._url = self.url()
+    def __init__(self, raw_data, filename):
+        self._created_at: datetime = datetime.now()
+        self.name = filename
+        self._data = raw_data
 
-    def path(self) -> str:
-        global DATA_PATH
-        DATA_PATH = os.path.join(cherrypy.config['server_directory'], date_path())
-        if not os.path.exists(DATA_PATH):
-            os.makedirs(DATA_PATH)
-        shutil.move(self._name, DATA_PATH)
-        return DATA_PATH
+    @property
+    def name(self) -> str:
+        return self._name
 
-    def name(self, old_name) -> str:
-        file_format = '.' + str(old_name).split('.')[-1]
-        new_name = str(int(time())).join(choices(string.ascii_lowercase, k=4)) + file_format
-        os.rename(old_name, new_name)
-        return new_name
+    @name.setter
+    def name(self, file_name: str):
+        file_format = '.' + file_name.split('.')[-1]
+        self._name = str(int(self._created_at.timestamp())).join(choices(string.ascii_lowercase, k=4)) + file_format
 
+    @property
+    def _relative_path(self) -> str:
+        return self._created_at.date().strftime('%Y/%m/%d')
+
+    @property
     def url(self) -> str:
         nginx_uri: str = cherrypy.config['nginx_uri']
-        result = os.path.join(nginx_uri, date_path(), self._name)
+        result = os.path.join(nginx_uri, self._relative_path, self._name)
         return '<a href="{}">{}</a>'.format(result, result)
 
+    def save(self):
+        upload_path = Path(cherrypy.config['server_directory']).joinpath(self._relative_path)
+        if not os.path.exists(upload_path):
+            os.makedirs(upload_path)
 
-def get_correct_month() -> str:
-    if datetime.today().month in [10, 11, 12]:
-        return str(datetime.today().month)
-    else:
-        return '0' + str(datetime.today().month)
-
-
-def date_path() -> str:
-    return os.path.join(str(datetime.today().year), get_correct_month(), str(datetime.today().day))
+        file_path = upload_path.joinpath(self.name)
+        file_path.write_bytes(self._data)
