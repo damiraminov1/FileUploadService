@@ -19,11 +19,13 @@ elif RUN_ENV == 'production':
 else:
     raise NameError('Environment variable `RUN_ENV` is incorrect')
 
+
 # APP SETTINGS
 
 APP_CONFIG = {
     '/': {
         'tools.sessions.on': True,
+        # 'tools.auth.on': True,
         'tools.staticdir.root': os.path.join(BASE_DIR, 'terminator'),
     },
     '/static': {
