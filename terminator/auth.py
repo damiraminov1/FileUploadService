@@ -1,5 +1,5 @@
 import cherrypy
-from terminator.ldap import check_auth, check_credentials
+from terminator.ldap import auth_require, check_credentials
 
 
 class Authorization:
@@ -9,7 +9,7 @@ class Authorization:
         cherrypy.request.login = username
         cherrypy.session['login'] = username
 
-    @cherrypy.expose()
+    @cherrypy.expose
     def login(self, username: str, password: str):
         if check_credentials(username, password)[1]:
             self.on_login(username)
@@ -17,7 +17,8 @@ class Authorization:
         else:
             raise cherrypy.HTTPRedirect('/index')
 
-    @check_auth()
+    @cherrypy.expose
+    @auth_require()
     def logout(self):
         cherrypy.request.login = ''
         cherrypy.session.pop('login', None)

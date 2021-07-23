@@ -1,8 +1,9 @@
-from cherrypy._cpreqbody import Part
-from terminator.models.file import FileObject
 import cherrypy
-from terminator.ldap import check_auth, check_credentials
+from cherrypy._cpreqbody import Part
+
 from terminator.auth import Authorization
+from terminator.ldap import auth_require
+from terminator.models.file import FileObject
 
 
 class Root(object):
@@ -13,18 +14,13 @@ class Root(object):
         return {}
 
     @cherrypy.expose
-    @check_auth()
+    @auth_require()
     def upload(self, myFile: Part):
         file = FileObject(myFile.file.read(), myFile.filename)
         file.save()
         return file.url
 
     @cherrypy.tools.jinja(template='base.html')
-    @check_auth()
-    def base(self, *args, **kwargs):
+    @auth_require()
+    def base(self):
         return {}
-        # if cherrypy.session['login']:
-        #     return {}
-        # else:
-        #     raise cherrypy.HTTPRedirect('/index')
-

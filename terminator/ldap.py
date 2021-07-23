@@ -1,16 +1,11 @@
 import ldap
 import cherrypy
-from typing import Optional
+from typing import Optional, Tuple
 
 
 LDAP_DOMAIN = cherrypy.config['ldap_domain']
 LDAP_BASE = cherrypy.config['ldap_base']
 LDAP_SERVER = cherrypy.config['ldap_server']
-
-_cp_config = {
-    'tools.session.on': True,
-    'tools.auth.on': True,
-}
 
 
 def auth_require():
@@ -23,7 +18,7 @@ def auth_require():
     return decorate
 
 
-def check_credentials(username, password):
+def check_credentials(username, password) -> Tuple[str, bool]:
     # if not username:
     #     return 'Не задан логин.', None
     # if not password:
@@ -40,11 +35,15 @@ def check_credentials(username, password):
 
 
 def check_auth(*args, **kwargs):
-    # login: Optional[str] = cherrypy.session.get("login")
-    login: Optional[str] = cherrypy.session["login"]
+    login: Optional[str] = cherrypy.session.get("login")
+    # login: Optional[str] = cherrypy.session["login"]
     if cherrypy.request.config.get("auth.require"):
         if not login:
-            raise cherrypy.HTTPRedirect("/auth")
+            raise cherrypy.HTTPRedirect("/")
         cherrypy.request.login = login
     elif login:
-        raise cherrypy.HTTPRedirect("/")
+        raise cherrypy.HTTPRedirect("/base")
+
+
+cherrypy.tools.auth = cherrypy.Tool("before_handler", check_auth)
+

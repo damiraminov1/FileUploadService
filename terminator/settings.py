@@ -25,11 +25,13 @@ else:
 APP_CONFIG = {
     '/': {
         'tools.sessions.on': True,
-        # 'tools.auth.on': True,
+        'tools.auth.on': True,
         'tools.staticdir.root': os.path.join(BASE_DIR, 'terminator'),
     },
     '/static': {
         'tools.staticdir.on': True,
-        'tools.staticdir.dir': 'static'
+        'tools.staticdir.dir': 'static',
+        "tools.sessions.on": False,
+        "tools.auth.on": False,
     },
 }
